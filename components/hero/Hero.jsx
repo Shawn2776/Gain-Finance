@@ -12,7 +12,7 @@ export default function HeroSection() {
             </p>
           </div>
           <div className="space-x-4">
-            <button className="btn btn-lg">Sign In</button>
+            <button className="btn btn-lg">Sign In, Yo</button>
           </div>
         </div>
       </div>
