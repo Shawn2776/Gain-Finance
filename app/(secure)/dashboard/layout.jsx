@@ -5,7 +5,7 @@ import React from "react";
 
 const AuthLayout = ({ children }) => {
   return (
-    <main className="flex flex-col w-full min-h-screen">
+    <main className="flex flex-col w-full min-h-screen text-black">
       <DashTopNav />
       <div className="flex w-full h-full">
         <div className="w-80 border min-h-screen">
