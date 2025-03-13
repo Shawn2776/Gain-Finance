@@ -24,8 +24,8 @@ const AddTransactions = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleAddTransaction} className="form">
+    <div className="w-68">
+      <form onSubmit={handleAddTransaction} className="form flex flex-col">
         <input
           type="number"
           step="0.01"
@@ -43,9 +43,11 @@ const AddTransactions = () => {
           <option value="deposit">Deposit</option>
           <option value="withdrawal">Withdrawal</option>
         </select>
-        <button type="submit" disabled={loading} className="btn">
-          {loading ? "Adding..." : "Add Transaction"}
-        </button>
+        <div className="flex justify-end">
+          <button type="submit" disabled={loading} className="btn">
+            {loading ? "Adding..." : "Add Transaction"}
+          </button>
+        </div>
       </form>
     </div>
   );
