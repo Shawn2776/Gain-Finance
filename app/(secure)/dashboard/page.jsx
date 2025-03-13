@@ -1,17 +1,86 @@
-import { auth, currentUser } from "@clerk/nextjs/server";
+"use client";
 
-const DashboardPage = async () => {
-  const { userId } = await auth();
+import { addTransaction, getUserTransactions } from "@/lib/actions/user.action";
+import { useState, useEffect } from "react";
 
-  if (!userId) {
-    return <div>Sign in to view this page</div>;
-  }
+const DashboardPage = () => {
+  const [transactions, setTransactions] = useState([]);
+  const [amount, setAmount] = useState("");
+  const [type, setType] = useState("deposit");
+  const [loading, setLoading] = useState(false);
 
-  const user = await currentUser();
+  // Fetch transactions on mount
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
 
-  console.log(user);
+  const fetchTransactions = async () => {
+    try {
+      const data = await getUserTransactions();
+      setTransactions(data);
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+    }
+  };
 
-  return <div>Hello, {user.firstName}</div>;
+  const handleAddTransaction = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      await addTransaction({ amount: parseFloat(amount), type });
+      setAmount(""); // Clear form
+      fetchTransactions(); // Refresh transactions list
+    } catch (error) {
+      console.error("Failed to add transaction:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-10">
+      <h1>Dashboard</h1>
+
+      {/* Transaction Form */}
+      <form onSubmit={handleAddTransaction} className="form">
+        <input
+          type="number"
+          step="0.01"
+          placeholder="Amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          required
+          className="input input-accent bg-white mb-1"
+        />
+        <select
+          className="select select-accent bg-white mb-1"
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+        >
+          <option value="deposit">Deposit</option>
+          <option value="withdrawal">Withdrawal</option>
+        </select>
+        <button type="submit" disabled={loading} className="btn">
+          {loading ? "Adding..." : "Add Transaction"}
+        </button>
+      </form>
+
+      {/* Transactions List */}
+      <h2>Your Transactions</h2>
+      <ul>
+        {transactions.length > 0 ? (
+          transactions.map((tx) => (
+            <li key={tx.id}>
+              {tx.type}: ${tx.amount} - {tx.status}
+            </li>
+          ))
+        ) : (
+          <p>No transactions found.</p>
+        )}
+      </ul>
+    </div>
+  );
 };
 
 export default DashboardPage;

@@ -1,5 +1,6 @@
 import {
   integer,
+  numeric,
   pgTable,
   text,
   timestamp,
@@ -20,4 +21,15 @@ export const users = pgTable("users", {
     .notNull()
     .defaultNow()
     .$onUpdate(() => new Date()),
+});
+
+export const transactions = pgTable("user_transactions", {
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
+  clerkId: text("clerk_id")
+    .notNull()
+    .references(() => users.clerkId, { onDelete: "cascade" }), // Reference `clerkId` instead of `userId`
+  amount: numeric("amount", { precision: 10, scale: 2 }).notNull(),
+  type: varchar("type", { length: 50 }).notNull(), // e.g., "deposit", "withdrawal"
+  status: varchar("status", { length: 50 }).default("pending"), // e.g., "pending", "completed"
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
