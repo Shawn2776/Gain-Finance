@@ -22,7 +22,7 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="flex flex-col gap-10 pl-5 bg-white w-full min-h-screen">
+    <div className="flex flex-col gap-10 w-full min-h-screen">
       <h1>Dashboard</h1>
 
       {/* Transaction Form */}
