@@ -39,7 +39,7 @@ const TransactionsPage = () => {
 
   return (
     <div className="w-full min-h-screen">
-      <AllTransactions transactions={transactions} />
+      <AllTransactions txs={transactions} />
     </div>
   );
 };
