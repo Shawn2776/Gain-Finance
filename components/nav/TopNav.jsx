@@ -10,7 +10,7 @@ import Link from "next/link";
 
 const TopNav = () => {
   return (
-    <header className="navbar px-5 mx-auto bg-[#404040]">
+    <header className="navbar px-5 mx-auto bg-[#404040] flex justify-between w-full items-center py-1">
       <div className="navbar-start">
         <Link href="/dashboard" className="flex text-orange-300">
           {" "}
