@@ -10,7 +10,7 @@ import Link from "next/link";
 
 const TopNav = () => {
   return (
-    <header className="navbar px-5 mx-auto bg-[#404040] flex justify-between w-full items-center py-1">
+    <header className="navbar px-5 mx-auto flex justify-between w-full items-center py-1 shadow-md">
       <div className="navbar-start">
         <Link href="/dashboard" className="flex text-orange-300">
           {" "}
@@ -23,8 +23,10 @@ const TopNav = () => {
       <div className="navbar-center"></div>
       <div className="navbar-end">
         <SignedOut>
-          <SignInButton />
-          <SignUpButton />
+          <div className="flex gap-5 font-bold">
+            <SignInButton />
+            <SignUpButton />
+          </div>
         </SignedOut>
         <SignedIn>
           <UserButton />
