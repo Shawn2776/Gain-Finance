@@ -71,6 +71,18 @@ const data = {
         },
       ],
     },
+    {
+      title: "Settings",
+      url: "/dashboard/settings",
+      icon: Frame,
+      isActive: true,
+      items: [
+        {
+          title: "Settings",
+          url: "/dashboard/settings",
+        },
+      ],
+    },
     // {
     //   title: "Models",
     //   url: "#",

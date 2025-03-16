@@ -3,6 +3,26 @@
 import { addTransaction } from "@/lib/actions/user.action";
 import { useState } from "react";
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { FormField } from "../ui/form";
+import { Loader2 } from "lucide-react";
+
 const AddTransactions = () => {
   const [amount, setAmount] = useState("");
   const [type, setType] = useState("deposit");
@@ -24,32 +44,49 @@ const AddTransactions = () => {
   };
 
   return (
-    <div className="w-68">
-      <form onSubmit={handleAddTransaction} className="form flex flex-col">
-        <input
-          type="number"
-          step="0.01"
-          placeholder="Amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          required
-          className="input input-accent bg-white mb-1"
-        />
-        <select
-          className="select select-accent bg-white mb-1"
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-        >
-          <option value="deposit">Deposit</option>
-          <option value="withdrawal">Withdrawal</option>
-        </select>
-        <div className="flex justify-end">
-          <button type="submit" disabled={loading} className="btn">
-            {loading ? "Adding..." : "Add Transaction"}
-          </button>
-        </div>
-      </form>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Add Transaction</CardTitle>
+        {/* <CardDescription>Add a new transaction</CardDescription> */}
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleAddTransaction} className="flex flex-col gap-4">
+          <div className="flex gap-2">
+            <Input
+              type="number"
+              step="0.01"
+              placeholder="Amount"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              required
+              className="w-full"
+            />
+            <Select value={type} onValueChange={setType} className="w-full">
+              <SelectTrigger>
+                <SelectValue placeholder="Transaction Type" />
+              </SelectTrigger>
+              <SelectContent className="bg-white text-black">
+                <SelectItem value="deposit">Deposit</SelectItem>
+                <SelectItem value="withdrawal">Withdrawal</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex justify-end items-center w-full">
+            {loading ? (
+              <Button disabled>
+                <Loader2 className="animate-spin" />
+                Adding...
+              </Button>
+            ) : (
+              <Button type="submit" variant="outline" className="w-full">
+                Add Transaction
+              </Button>
+            )}
+          </div>
+        </form>
+      </CardContent>
+    </Card>
   );
 };
 

@@ -1,8 +1,12 @@
 "use client";
 
 import AddTransactions from "@/components/transactions/AddTransactions";
-import { getUserTransactions } from "@/lib/actions/user.action";
+import {
+  deleteTransaction,
+  getUserTransactions,
+} from "@/lib/actions/user.action";
 import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
 const DashboardPage = () => {
   const [transactions, setTransactions] = useState([]);
@@ -21,20 +25,38 @@ const DashboardPage = () => {
     }
   };
 
+  const handleDelete = async (transactionId) => {
+    try {
+      const response = await deleteTransaction(transactionId);
+      if (response.success) {
+        setTransactions((prev) => prev.filter((tx) => tx.id !== transactionId)); // Remove deleted transaction
+      } else {
+        console.error("Error deleting transaction:", response.error);
+      }
+    } catch (error) {
+      console.error("Error deleting transaction:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-10 w-full min-h-screen">
-      <h1>Dashboard</h1>
+      <h1 className="text-xl font-bold">Dashboard</h1>
 
       {/* Transaction Form */}
-      <AddTransactions />
+      <div className="grid md:grid-cols-3 grid-cols-1">
+        <AddTransactions />
+      </div>
 
       {/* Transactions List */}
-      <h2>Your Transactions</h2>
+      <h2 className="text-lg">Your Transactions</h2>
       <ul>
         {transactions.length > 0 ? (
           transactions.map((tx) => (
-            <li key={tx.id}>
+            <li key={tx.id} className="flex items-center gap-4">
               {tx.type}: ${tx.amount} - {tx.status}
+              <Button onClick={() => handleDelete(tx.id)} variant="destructive">
+                Delete
+              </Button>
             </li>
           ))
         ) : (
