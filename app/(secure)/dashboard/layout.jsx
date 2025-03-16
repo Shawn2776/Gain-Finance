@@ -76,7 +76,13 @@ const AuthLayout = ({ children }) => {
             </SignedIn>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
+        <div className="flex flex-1 flex-col gap-4 p-4">
+          <div className="flex flex-col gap-5 w-full min-h-screen">
+            <h1 className="text-xl font-bold">{path}</h1>
+            <hr className="border border-gray-500/50" />
+            {children}
+          </div>
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );

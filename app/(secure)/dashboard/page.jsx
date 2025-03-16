@@ -39,9 +39,7 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="flex flex-col gap-10 w-full min-h-screen">
-      <h1 className="text-xl font-bold">Dashboard</h1>
-
+    <div>
       {/* Transaction Form */}
       <div className="grid md:grid-cols-3 grid-cols-1">
         <AddTransactions />

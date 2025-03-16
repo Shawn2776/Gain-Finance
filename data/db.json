@@ -6,31 +6,35 @@
       "type": "deposit",
       "payee": "North Idaho College",
       "description": "Paycheck from North Idaho College",
-      "userId": "01"
+      "userId": "01",
+      "amount": 30.01
     },
     {
       "id": 2,
       "date": "03-16-2025",
-      "type": "deposit",
+      "type": "withdrawal",
       "payee": "North Idaho College",
       "description": "Paycheck from North Idaho College",
-      "userId": "01"
+      "userId": "01",
+      "amount": 20.01
     },
     {
       "id": 3,
       "date": "03-16-2025",
-      "type": "deposit",
+      "type": "withdrawal",
       "payee": "North Idaho College",
       "description": "Paycheck from North Idaho College",
-      "userId": "01"
+      "userId": "01",
+      "amount": 230.01
     },
     {
       "id": 4,
       "date": "03-16-2025",
-      "type": "deposit",
+      "type": "withdrawal",
       "payee": "North Idaho College",
       "description": "Paycheck from North Idaho College",
-      "userId": "01"
+      "userId": "01",
+      "amount": 99.01
     },
     {
       "id": 5,
@@ -38,7 +42,8 @@
       "type": "deposit",
       "payee": "North Idaho College",
       "description": "Paycheck from North Idaho College",
-      "userId": "01"
+      "userId": "01",
+      "amount": 110.01
     }
   ]
 }
