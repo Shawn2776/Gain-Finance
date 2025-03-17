@@ -75,7 +75,7 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
       accessorKey: "created_at", // Assuming created_at is the date field
       header: "Date",
       cell: ({ row }) => {
-        const rawDate = row.original.created_at;
+        const rawDate = row.original.createdAt;
 
         // Log the raw date and its type
         console.log("Raw Date:", rawDate, "Type:", typeof rawDate);
