@@ -99,13 +99,15 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
     {
       accessorKey: "amount",
       header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Amount
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <span className="text-center">
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Amount
+            <ArrowUpDown className="ml-1 h-4 w-4" />
+          </Button>
+        </span>
       ),
       cell: ({ row }) => (
         <span
@@ -127,7 +129,7 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
       id: "actions",
       header: "Actions",
       cell: ({ row }) => (
-        <DropdownMenu>
+        <DropdownMenu className="text-center">
           <DropdownMenuTrigger asChild>
             <Button variant="" className="h-8 w-8 p-0">
               <MoreHorizontal className="h-4 w-4" />
