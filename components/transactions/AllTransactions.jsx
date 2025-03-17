@@ -99,13 +99,15 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
     {
       accessorKey: "amount",
       header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Amount
-          <ArrowUpDown className="ml-1 h-4 w-4" />
-        </Button>
+        <span className="w-full flex justify-end">
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Amount
+            <ArrowUpDown className="ml-1 h-4 w-4" />
+          </Button>
+        </span>
       ),
       cell: ({ row }) => (
         <span
