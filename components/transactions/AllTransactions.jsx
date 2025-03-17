@@ -113,7 +113,7 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
             row.original.type === "withdrawal"
               ? "text-red-500"
               : "text-green-800"
-          } text-center w-full`}
+          } flex w-full justify-center`}
         >
           ${row.original.amount}
         </span>
