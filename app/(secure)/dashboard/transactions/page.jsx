@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 
 const TransactionsPage = () => {
   const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Fetch transactions on mount
   useEffect(() => {
@@ -16,11 +17,15 @@ const TransactionsPage = () => {
   }, []);
 
   const fetchTransactions = async () => {
+    setLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 5000));
     try {
       const data = await getUserTransactions();
       setTransactions(data);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching transactions:", error);
+      setLoading(false);
     }
   };
 
@@ -39,7 +44,7 @@ const TransactionsPage = () => {
 
   return (
     <div className="w-full min-h-screen">
-      <AllTransactions txs={transactions} />
+      <AllTransactions txs={transactions} loading={loading} />
     </div>
   );
 };

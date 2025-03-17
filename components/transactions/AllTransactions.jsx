@@ -9,7 +9,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -21,6 +20,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { PacmanLoader } from "react-spinners";
+
 import {
   Table,
   TableBody,
@@ -102,7 +103,20 @@ const columns = [
   },
 ];
 
-const AllTransactions = ({ txs }) => {
+const AllTransactions = ({ txs, loading }) => {
+  if (loading) {
+    return (
+      <div className="w-full flex justify-center">
+        <PacmanLoader className="text-sm" color="#36D7B7" />
+      </div>
+    );
+  }
+  if (!txs || txs.length === 0) {
+    return (
+      <div className="text-center text-gray-500">No transactions found.</div>
+    );
+  }
+
   const [sorting, setSorting] = useState([]);
   const table = useReactTable({
     data: txs || [],
