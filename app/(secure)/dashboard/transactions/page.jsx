@@ -44,11 +44,7 @@ const TransactionsPage = () => {
 
   return (
     <div className="w-full min-h-screen">
-      <AllTransactions
-        txs={transactions}
-        loading={loading}
-        delete={handleDelete}
-      />
+      <AllTransactions txs={transactions} loading={loading} />
     </div>
   );
 };

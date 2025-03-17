@@ -33,6 +33,19 @@ import {
 // import { transactions as txs } from "../../data/db.json";
 import { useState } from "react";
 
+const handleDelete = async (transactionId) => {
+  try {
+    const response = await deleteTransaction(transactionId);
+    if (response.success) {
+      setTransactions((prev) => prev.filter((tx) => tx.id !== transactionId)); // Remove deleted transaction
+    } else {
+      console.error("Error deleting transaction:", response.error);
+    }
+  } catch (error) {
+    console.error("Error deleting transaction:", error);
+  }
+};
+
 const columns = [
   {
     id: "select",
@@ -107,7 +120,7 @@ const columns = [
   },
 ];
 
-const AllTransactions = ({ txs, loading, handleDelete }) => {
+const AllTransactions = ({ txs, loading }) => {
   if (loading) {
     return (
       <div className="w-full flex justify-center">
