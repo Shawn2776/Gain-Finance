@@ -77,11 +77,27 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
       cell: ({ row }) => {
         const rawDate = row.original.created_at;
 
-        // Ensure the date is in a valid format for JavaScript's Date constructor
-        const validDate = rawDate.split(".")[0].replace(" ", "T"); // Remove microseconds and replace space with 'T'
+        // Log the raw date and its type
+        console.log("Raw Date:", rawDate, "Type:", typeof rawDate);
 
-        const formattedDate = format(new Date(validDate), "dd MMM yyyy");
-        return <span>{formattedDate}</span>;
+        if (!rawDate) {
+          console.error("Invalid Date: created_at is null or undefined");
+          return <span>Invalid Date</span>;
+        }
+
+        try {
+          // Ensure the date is in a valid format for JavaScript's Date constructor
+          const validDate = rawDate.split(".")[0].replace(" ", "T"); // Remove microseconds and replace space with 'T'
+
+          // Log the formatted date string before parsing
+          console.log("Formatted Date String:", validDate);
+
+          const formattedDate = format(new Date(validDate), "dd MMM yyyy");
+          return <span>{formattedDate}</span>;
+        } catch (error) {
+          console.error("Error formatting date:", error);
+          return <span>Invalid Date</span>;
+        }
       },
     },
     {
