@@ -20,7 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { PacmanLoader } from "react-spinners";
+import { BarLoader, PacmanLoader } from "react-spinners";
 
 import {
   Table,
@@ -96,18 +96,20 @@ const columns = [
           <DropdownMenuLabel className="hidden">Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Delete</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => handleDelete(row.original.id)}>
+            Delete
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     ),
   },
 ];
 
-const AllTransactions = ({ txs, loading }) => {
+const AllTransactions = ({ txs, loading, handleDelete }) => {
   if (loading) {
     return (
       <div className="w-full flex justify-center">
-        <PacmanLoader className="text-sm" color="#36D7B7" />
+        <BarLoader className="text-sm" color="#36D7B7" />
       </div>
     );
   }
