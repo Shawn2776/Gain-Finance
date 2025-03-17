@@ -96,8 +96,10 @@ const columns = [
           <DropdownMenuLabel className="hidden">Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleDelete(row.original.id)}>
-            Delete
+          <DropdownMenuItem>
+            <Button onClick={() => handleDelete(row.original.id)}>
+              Delete
+            </Button>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
