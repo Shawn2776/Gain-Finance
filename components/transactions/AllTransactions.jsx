@@ -42,6 +42,7 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
     try {
       const response = await deleteTransaction(transactionId);
       if (response.success) {
+        alert("Transaction successfully deleted.");
         const updatedTxs = txs.filter((tx) => tx.id !== transactionId);
         setTransactions(updatedTxs);
       } else {
