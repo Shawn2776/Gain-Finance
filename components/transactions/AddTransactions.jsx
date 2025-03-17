@@ -23,7 +23,7 @@ import {
 import { FormField } from "../ui/form";
 import { Loader2 } from "lucide-react";
 
-const AddTransactions = () => {
+const AddTransactions = ({ fetchTransactions }) => {
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState("deposit");
@@ -37,7 +37,7 @@ const AddTransactions = () => {
       await addTransaction({ amount: parseFloat(amount), type, description });
       setAmount(""); // Clear form
       setDescription("");
-      fetchTransactions(); // Refresh transactions list
+      fetchTransactions();
     } catch (error) {
       console.error("Failed to add transaction:", error);
     } finally {

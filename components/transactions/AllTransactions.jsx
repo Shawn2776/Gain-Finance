@@ -54,15 +54,10 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
     }
   };
 
-  // // Compute the total balance
-  // const totalBalance = txs.reduce(
-  //   (acc, tx) => acc + parseFloat(tx.amount) * (tx.type === "deposit" ? 1 : -1),
-  //   0
-  // );
-
+  // Define the columns for the table
   const columns = [
     {
-      accessorKey: "createdAt", // Use camelCase for the createdAt field
+      accessorKey: "createdAt", // Assuming createdAt is the date field
       header: "Date",
       cell: ({ row }) => {
         const rawDate = row.original.createdAt;
@@ -75,34 +70,15 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
       header: "Description",
     },
     {
-      accessorKey: "tags",
-      header: "Tags",
-      cell: ({ row }) => (
-        <span>
-          {row.original.tags ? row.original.tags.join(", ") : "No Tags"}
-        </span>
-      ),
-    },
-    {
       accessorKey: "amount",
-      header: ({ column }) => (
-        <span className="w-full flex justify-end">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Amount
-            <ArrowUpDown className="ml-1 h-4 w-4" />
-          </Button>
-        </span>
-      ),
+      header: "Amount",
       cell: ({ row }) => (
         <span
-          className={`${
+          className={
             row.original.type === "withdrawal"
               ? "text-red-500"
               : "text-green-800"
-          } flex w-full justify-center`}
+          }
         >
           ${row.original.amount}
         </span>
@@ -111,17 +87,13 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
     {
       accessorKey: "balance",
       header: "Balance",
-      cell: ({ row }) => (
-        <span className="flex w-full justify-center">
-          ${row.original.balance}
-        </span>
-      ),
+      cell: ({ row }) => <span>${row.original.balance}</span>,
     },
     {
       id: "actions",
       header: "Actions",
       cell: ({ row }) => (
-        <DropdownMenu className="text-center">
+        <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="" className="h-8 w-8 p-0">
               <MoreHorizontal className="h-4 w-4" />
@@ -142,6 +114,20 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
     },
   ];
 
+  // Hooks must be called unconditionally
+  const [sorting, setSorting] = useState([]);
+  const table = useReactTable({
+    data: txs || [],
+    columns, // Use the defined columns
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+  });
+
+  // Conditional rendering AFTER hooks
   if (loading) {
     return (
       <div className="w-full flex justify-center">
@@ -155,18 +141,6 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
       <div className="text-center text-gray-500">No transactions found.</div>
     );
   }
-
-  const [sorting, setSorting] = useState([]);
-  const table = useReactTable({
-    data: txs || [],
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    state: {
-      sorting,
-    },
-    onSortingChange: setSorting,
-  });
 
   return (
     <div>
@@ -197,9 +171,6 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
           ))}
         </TableBody>
       </Table>
-      {/* <div className="text-right mt-4 font-bold">
-        Total Balance: ${totalBalance.toFixed(2)}
-      </div> */}
     </div>
   );
 };

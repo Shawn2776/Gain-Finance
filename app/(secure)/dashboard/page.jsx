@@ -11,11 +11,6 @@ import { Button } from "@/components/ui/button";
 const DashboardPage = () => {
   const [transactions, setTransactions] = useState([]);
 
-  // Fetch transactions on mount
-  useEffect(() => {
-    fetchTransactions();
-  }, []);
-
   const fetchTransactions = async () => {
     try {
       const data = await getUserTransactions();
@@ -24,6 +19,11 @@ const DashboardPage = () => {
       console.error("Error fetching transactions:", error);
     }
   };
+
+  // Fetch transactions on mount
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
 
   const handleDelete = async (transactionId) => {
     try {
@@ -42,7 +42,7 @@ const DashboardPage = () => {
     <div>
       {/* Transaction Form */}
       <div className="grid md:grid-cols-3 grid-cols-1">
-        <AddTransactions />
+        <AddTransactions fetchTransactions={fetchTransactions} />
       </div>
 
       {/* Transactions List */}
