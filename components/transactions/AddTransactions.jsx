@@ -76,7 +76,7 @@ const AddTransactions = () => {
           <Input
             type="text"
             placeholder="Description"
-            value={amount}
+            value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
             className="w-full"
