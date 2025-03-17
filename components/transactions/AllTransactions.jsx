@@ -77,9 +77,6 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
       cell: ({ row }) => {
         const rawDate = row.original.createdAt;
 
-        // Log the raw date and its type
-        console.log("Raw Date:", rawDate, "Type:", typeof rawDate);
-
         if (!rawDate) {
           console.error("Invalid Date: createdAt is null or undefined");
           return <span>Invalid Date</span>;
