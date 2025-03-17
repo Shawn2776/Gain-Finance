@@ -76,10 +76,11 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
       header: "Date",
       cell: ({ row }) => {
         const rawDate = row.original.created_at;
-        const formattedDate = format(
-          new Date(rawDate.replace(" ", "T")),
-          "dd MMM yyyy"
-        );
+
+        // Ensure the date is in a valid format for JavaScript's Date constructor
+        const validDate = rawDate.split(".")[0].replace(" ", "T"); // Remove microseconds and replace space with 'T'
+
+        const formattedDate = format(new Date(validDate), "dd MMM yyyy");
         return <span>{formattedDate}</span>;
       },
     },
