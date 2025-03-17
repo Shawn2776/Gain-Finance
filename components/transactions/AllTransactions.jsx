@@ -32,12 +32,15 @@ import {
 } from "@/components/ui/table";
 // import { transactions as txs } from "../../data/db.json";
 import { useState } from "react";
+import { deleteTransaction } from "@/lib/actions/user.action";
+import { useRouter } from "next/navigation";
 
 const handleDelete = async (transactionId) => {
   try {
     const response = await deleteTransaction(transactionId);
     if (response.success) {
-      setTransactions((prev) => prev.filter((tx) => tx.id !== transactionId)); // Remove deleted transaction
+      // setTransactions((prev) => prev.filter((tx) => tx.id !== transactionId)); // Remove deleted transaction
+      router.refresh();
     } else {
       console.error("Error deleting transaction:", response.error);
     }
@@ -121,6 +124,7 @@ const columns = [
 ];
 
 const AllTransactions = ({ txs, loading }) => {
+  const router = useRouter();
   if (loading) {
     return (
       <div className="w-full flex justify-center">
