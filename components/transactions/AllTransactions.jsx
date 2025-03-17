@@ -54,47 +54,34 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
     }
   };
 
-  // Move columns inside the component
+  // Compute the total balance
+  const totalBalance = txs.reduce(
+    (acc, tx) => acc + parseFloat(tx.amount) * (tx.type === "deposit" ? 1 : -1),
+    0
+  );
+
   const columns = [
     {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected()}
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-        />
-      ),
-    },
-    {
-      accessorKey: "created_at", // Assuming created_at is the date field
+      accessorKey: "createdAt", // Use camelCase for the createdAt field
       header: "Date",
       cell: ({ row }) => {
         const rawDate = row.original.createdAt;
-
-        if (!rawDate) {
-          console.error("Invalid Date: createdAt is null or undefined");
-          return <span>Invalid Date</span>;
-        }
-
-        try {
-          // Since rawDate is already a Date object, directly format it
-          const formattedDate = format(rawDate, "dd MMM yyyy");
-          return <span>{formattedDate}</span>;
-        } catch (error) {
-          console.error("Error formatting date:", error);
-          return <span>Invalid Date</span>;
-        }
+        if (!rawDate) return <span>Invalid Date</span>;
+        return <span>{format(new Date(rawDate), "dd MMM yyyy")}</span>;
       },
     },
     {
       accessorKey: "description",
       header: "Description",
+    },
+    {
+      accessorKey: "tags",
+      header: "Tags",
+      cell: ({ row }) => (
+        <span>
+          {row.original.tags ? row.original.tags.join(", ") : "No Tags"}
+        </span>
+      ),
     },
     {
       accessorKey: "amount",
@@ -124,6 +111,11 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
     {
       accessorKey: "balance",
       header: "Balance",
+      cell: ({ row }) => (
+        <span className="flex w-full justify-center">
+          ${row.original.balance}
+        </span>
+      ),
     },
     {
       id: "actions",
@@ -177,33 +169,38 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
   });
 
   return (
-    <Table className="max-w-xl">
-      <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <TableHead key={header.id}>
-                {flexRender(
-                  header.column.columnDef.header,
-                  header.getContext()
-                )}
-              </TableHead>
-            ))}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {table.getRowModel().rows.map((row) => (
-          <TableRow key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </TableCell>
-            ))}
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <div>
+      <Table className="max-w-xl">
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <TableHead key={header.id}>
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                </TableHead>
+              ))}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows.map((row) => (
+            <TableRow key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <TableCell key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <div className="text-right mt-4 font-bold">
+        Total Balance: ${totalBalance.toFixed(2)}
+      </div>
+    </div>
   );
 };
 
