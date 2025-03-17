@@ -35,14 +35,15 @@ import { useState } from "react";
 import { deleteTransaction } from "@/lib/actions/user.action";
 import { useRouter } from "next/navigation";
 
-const AllTransactions = ({ txs, loading }) => {
+const AllTransactions = ({ txs, loading, setTransactions }) => {
   const router = useRouter();
 
   const handleDelete = async (transactionId) => {
     try {
       const response = await deleteTransaction(transactionId);
       if (response.success) {
-        router.refresh(); // Refresh the page after successful deletion
+        const updatedTxs = txs.filter((tx) => tx.id !== transactionId);
+        setTransactions(updatedTxs);
       } else {
         console.error("Error deleting transaction:", response.error);
       }
