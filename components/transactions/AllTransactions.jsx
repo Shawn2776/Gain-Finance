@@ -74,9 +74,14 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
     {
       accessorKey: "created_at", // Assuming created_at is the date field
       header: "Date",
-      cell: ({ row }) => (
-        <span>{format(new Date(row.original.created_at), "dd MMM yyyy")}</span>
-      ),
+      cell: ({ row }) => {
+        const rawDate = row.original.created_at;
+        const formattedDate = format(
+          new Date(rawDate.replace(" ", "T")),
+          "dd MMM yyyy"
+        );
+        return <span>{formattedDate}</span>;
+      },
     },
     {
       accessorKey: "description",
