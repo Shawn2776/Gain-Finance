@@ -35,96 +35,99 @@ import { useState } from "react";
 import { deleteTransaction } from "@/lib/actions/user.action";
 import { useRouter } from "next/navigation";
 
-const handleDelete = async (transactionId) => {
-  try {
-    const response = await deleteTransaction(transactionId);
-    if (response.success) {
-      // setTransactions((prev) => prev.filter((tx) => tx.id !== transactionId)); // Remove deleted transaction
-      router.refresh();
-    } else {
-      console.error("Error deleting transaction:", response.error);
-    }
-  } catch (error) {
-    console.error("Error deleting transaction:", error);
-  }
-};
-
-const columns = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-      />
-    ),
-  },
-  {
-    accessorKey: "date",
-    header: "Date",
-  },
-  {
-    accessorKey: "description",
-    header: "Description",
-  },
-  {
-    accessorKey: "amount",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Amount
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-    cell: ({ row }) => (
-      <span
-        className={
-          row.original.type === "withdrawal" ? "text-red-500" : "text-green-800"
-        }
-      >
-        ${row.original.amount}
-      </span>
-    ),
-  },
-  {
-    accessorKey: "balance",
-    header: "Balance",
-  },
-  {
-    id: "actions",
-    header: "Actions",
-    cell: () => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="" className="h-8 w-8 p-0">
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="bg-white">
-          <DropdownMenuLabel className="hidden">Actions</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>
-            <Button onClick={() => handleDelete(row.original.id)}>
-              Delete
-            </Button>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
-  },
-];
-
 const AllTransactions = ({ txs, loading }) => {
   const router = useRouter();
+
+  const handleDelete = async (transactionId) => {
+    try {
+      const response = await deleteTransaction(transactionId);
+      if (response.success) {
+        router.refresh(); // Refresh the page after successful deletion
+      } else {
+        console.error("Error deleting transaction:", response.error);
+      }
+    } catch (error) {
+      console.error("Error deleting transaction:", error);
+    }
+  };
+
+  // Move columns inside the component
+  const columns = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected()}
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+        />
+      ),
+    },
+    {
+      accessorKey: "date",
+      header: "Date",
+    },
+    {
+      accessorKey: "description",
+      header: "Description",
+    },
+    {
+      accessorKey: "amount",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Amount
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <span
+          className={
+            row.original.type === "withdrawal"
+              ? "text-red-500"
+              : "text-green-800"
+          }
+        >
+          ${row.original.amount}
+        </span>
+      ),
+    },
+    {
+      accessorKey: "balance",
+      header: "Balance",
+    },
+    {
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="" className="h-8 w-8 p-0">
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="bg-white">
+            <DropdownMenuLabel className="hidden">Actions</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Button onClick={() => handleDelete(row.original.id)}>
+                Delete
+              </Button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ),
+    },
+  ];
+
   if (loading) {
     return (
       <div className="w-full flex justify-center">
@@ -132,6 +135,7 @@ const AllTransactions = ({ txs, loading }) => {
       </div>
     );
   }
+
   if (!txs || txs.length === 0) {
     return (
       <div className="text-center text-gray-500">No transactions found.</div>
