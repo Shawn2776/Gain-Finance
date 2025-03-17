@@ -25,6 +25,7 @@ import { Loader2 } from "lucide-react";
 
 const AddTransactions = () => {
   const [amount, setAmount] = useState("");
+  const [description, setDescription] = useState("");
   const [type, setType] = useState("deposit");
   const [loading, setLoading] = useState(false);
 
@@ -33,8 +34,9 @@ const AddTransactions = () => {
     setLoading(true);
 
     try {
-      await addTransaction({ amount: parseFloat(amount), type });
+      await addTransaction({ amount: parseFloat(amount), type, description });
       setAmount(""); // Clear form
+      setDescription("");
       fetchTransactions(); // Refresh transactions list
     } catch (error) {
       console.error("Failed to add transaction:", error);
@@ -71,7 +73,14 @@ const AddTransactions = () => {
               </SelectContent>
             </Select>
           </div>
-
+          <Input
+            type="text"
+            placeholder="Description"
+            value={amount}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+            className="w-full"
+          />
           <div className="flex justify-end items-center w-full">
             {loading ? (
               <Button disabled>

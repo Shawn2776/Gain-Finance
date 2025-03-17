@@ -21,7 +21,18 @@ const TransactionsPage = () => {
     await new Promise((resolve) => setTimeout(resolve, 5000));
     try {
       const data = await getUserTransactions();
-      setTransactions(data);
+
+      // Compute the running balance
+      let runningBalance = 0;
+      const transactionsWithBalance = data.map((tx) => {
+        runningBalance +=
+          tx.type === "deposit"
+            ? parseFloat(tx.amount)
+            : -parseFloat(tx.amount);
+        return { ...tx, balance: runningBalance };
+      });
+
+      setTransactions(transactionsWithBalance);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching transactions:", error);
@@ -45,7 +56,7 @@ const TransactionsPage = () => {
   return (
     <div className="w-full min-h-screen">
       <AllTransactions
-        txs={transactions}
+        txs={transactions} // Pass transactions with running balance
         loading={loading}
         setTransactions={setTransactions}
       />
