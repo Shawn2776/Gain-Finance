@@ -99,23 +99,21 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
     {
       accessorKey: "amount",
       header: ({ column }) => (
-        <span className="text-center">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Amount
-            <ArrowUpDown className="ml-1 h-4 w-4" />
-          </Button>
-        </span>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Amount
+          <ArrowUpDown className="ml-1 h-4 w-4" />
+        </Button>
       ),
       cell: ({ row }) => (
         <span
-          className={
+          className={`${
             row.original.type === "withdrawal"
               ? "text-red-500"
               : "text-green-800"
-          }
+          } text-center w-full`}
         >
           ${row.original.amount}
         </span>
