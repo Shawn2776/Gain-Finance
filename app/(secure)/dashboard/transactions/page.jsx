@@ -53,13 +53,32 @@ const TransactionsPage = () => {
     }
   };
 
+  // Compute the total balance
+  const totalBalance = transactions?.reduce(
+    (acc, tx) => acc + parseFloat(tx.amount) * (tx.type === "deposit" ? 1 : -1),
+    0
+  );
+
   return (
-    <div className="w-full min-h-screen">
+    <div className="w-full min-h-screen flex justify-between">
       <AllTransactions
         txs={transactions} // Pass transactions with running balance
         loading={loading}
         setTransactions={setTransactions}
       />
+      <div className={`${loading ? "hidden" : "mr-10"}`}>
+        <div
+          className={`${
+            totalBalance === 0
+              ? "text-black}"
+              : totalBalance < 0
+              ? "text-red-500"
+              : "text-green-800"
+          }`}
+        >
+          <p>Balance: ${totalBalance}</p>
+        </div>
+      </div>
     </div>
   );
 };

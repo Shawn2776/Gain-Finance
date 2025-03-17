@@ -54,11 +54,11 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
     }
   };
 
-  // Compute the total balance
-  const totalBalance = txs.reduce(
-    (acc, tx) => acc + parseFloat(tx.amount) * (tx.type === "deposit" ? 1 : -1),
-    0
-  );
+  // // Compute the total balance
+  // const totalBalance = txs.reduce(
+  //   (acc, tx) => acc + parseFloat(tx.amount) * (tx.type === "deposit" ? 1 : -1),
+  //   0
+  // );
 
   const columns = [
     {
@@ -197,9 +197,9 @@ const AllTransactions = ({ txs, loading, setTransactions }) => {
           ))}
         </TableBody>
       </Table>
-      <div className="text-right mt-4 font-bold">
+      {/* <div className="text-right mt-4 font-bold">
         Total Balance: ${totalBalance.toFixed(2)}
-      </div>
+      </div> */}
     </div>
   );
 };
